@@ -204,21 +204,18 @@ function reservationOk(){
   }
     
   function generaCotxesPossibles (id){
-    firebase.database().ref("/").once('value').then(function(db){
-      var db = db.val();
-      for (var i = 0; i < db.)
-      var ciutatuser = db.persona[id].origen;
-  
-      var l = [];
-  
-      for (var i = 0; i < db.car.length; ++i){
-        if (db.car[i].Origen === ciutatuser && db.car[i].seat > 0){
-          l.push(db.car[i]);
-       }
-      }
-    });
-
-
-
- 
-   
+        firebase.database().ref("/").once('value').then(function(db){
+        var db = db.val();
+        for (var i = 0; i < db.){
+        var ciutatuser = db.persona[id].origen;
+        }
+    
+        var l = [];
+    
+        for (var i = 0; i < db.car.length; ++i){
+            if (db.car[i].Origen === ciutatuser && db.car[i].seat > 0){
+            l.push(db.car[i]);
+        }
+        }
+        });
+    }
