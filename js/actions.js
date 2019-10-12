@@ -26,6 +26,8 @@ function showCarModal(){
     else modal.classList.add("invisible");
 };
 
+
+
 var content = [
     { title: 'Sonar' },
     { title: 'Oktoberfest' },
@@ -67,7 +69,8 @@ function reservationOk(){
     document.getElementById("resOkMessage").classList.remove("invisible");
     setTimeout(function () {
         document.getElementById("resOkMessage").classList.add("invisible");
-    }, 2000);
+        redirect();
+    }, 3000);
 }
 
 
@@ -77,28 +80,44 @@ function reservationOk(){
  
    var nompers = document.getElementById("id_persona").value;
    var ubi = document.getElementById("origen").value;
-   var hasCar = document.getElementById("hasCar").value;
-   var numPlaces, cartype;
+   var hasCar = document.getElementById("hasCar").checked;
+   var event = document.getElementById("event").value;
+   var seat, cartype;
+   console.log("HASCAR? " + hasCar);
  
    if(hasCar){
+       console.log("Has car");
      cartype = document.getElementById("carType").value;
-     numPlaces = document.getElementById("numPlaces").value
+     seat = document.getElementById("seat").value
+
+     firebase.database().ref("/car").once('value').then(function(car) {
+      var cars = car.val();
+      
+      firebase.database().ref('/car/' + cars.length).set({
+        id_persona: nompers,
+        Origen: ubi,
+        seat: seat,
+        tipus: cartype,
+        eventId: event
+      });
+      
+    });
    }
    else {
      cartype = null;
-     numplaces = null;
-   }
- 
-   firebase.database().ref("/persona").once('value').then(function(persona) {
-     var pers = persona.val();
-     
-     firebase.database().ref('/persona/' + pers.length).set({
-       id_persona: nompers,
-       origen: ubi,
-       hasCar: hasCar,
-       cartype
-     });
-   })
+     seat = null;
+    }
+    
+    firebase.database().ref("/persona").once('value').then(function(persona) {
+      var pers = persona.val();
+      
+      firebase.database().ref('/persona/' + pers.length).set({
+        id_persona: nompers,
+        origen: ubi
+      });
+      
+    });
+
  }
  
  function guardaformulariEvent(){
@@ -219,3 +238,44 @@ function reservationOk(){
         }
         });
     }
+
+    function redirect() {
+        window.location.href='validatecar.html';
+        return false;
+      }
+
+
+
+          
+function generaCotxesPossibles (id){
+    firebase.database().ref("/").once('value').then(function(db){
+      var db = db.val();
+      var orig;
+  
+      for (var i = 0; i < db.persona.length; ++i){
+        if (db.persona[i].id_persona == id) orig = db.persona[i].origen;
+      }
+        
+      var l = [];
+        
+      for (var i = 0; i < db.car.length; ++i){
+        if (orig == db.car[i].Origen && db.car[i].seat > 0){
+          l.push(db.car[i]);
+        }
+      }
+    });
+  }
+  
+  function reservaseient (id_cotxe){
+    firebase.database().ref("/").once('value').then(function(db){
+      var db = db.val();
+      for (var i = 0; i < db.car.length; ++i){
+        if (db.car[i].id_persona == id_cotxe) seat = seat - 1;
+      }
+    });
+  }
+  
+  function seleccionacotxe(id){
+    l = generaCotxesPossibles(id);
+  
+  }
