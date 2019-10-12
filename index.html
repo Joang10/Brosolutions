@@ -74,43 +74,42 @@
                 
             
             <form class="ui form">
-                <div class="field">
-                    <label>Your name:</label>
                     <div class="field">
-                        <input type="text" name="shipping[last-name]" id="id_persona" placeholder="Your Name">
-                    </div>
-                </div>
-                <div class="two fields">
-                    <div class="field">
-                    <label>From:</label>
-                    <select class="ui fluid dropdown" id="origen">
-                        <option value="">Available locations</option>
-                        <option value="Alava">Álava</option>
-                        <option value="Barcelona">Barcelona</option>
-                        <option value="Cadiz">Cádiz</option>
-                        <option value="Lleida">Lleida</option>
-                    </select>
-                    </div>
-                </div>
-
-                <div class="two fields">
-                        <div class="field">
-                        <label>Event:</label>
-                        <select class="ui fluid dropdown" id="event">
-                            <option value="">Events</option>
-                            <option value="HackUPC">HackUPC</option>
-                            <option value="Oktoberfest">Oktoberfest</option>
-                            <option value="Hitler">Hitler day</option>
-                            <option value="China">CHina day</option>
-                        </select>
+                            <label>Your name:</label>
+                            <div class="field">
+                                <input type="text" name="shipping[last-name]" id="id_persona" placeholder="Your Name">
+                            </div>
                         </div>
 
-                    </div>
-                <div class="inline field">
-                    <div class="ui toggle checkbox">
-                        <input onchange="showCarModal()" id="hasCar" type="checkbox" tabindex="0" class="hidden">
-                        <label>I have an available car</label>
-                    </div>
+                        <div class="two fields">
+                                <div class="field">
+                                    <label>Event:</label>
+                                    <select id="event" class="ui fluid dropdown">
+                                        <option value="">Type</option>
+                                        <option value="Hackupc">Hackupc</option>
+                                        <option value="Oktoberfest">Oktoberfest</option>
+                                        <option value="China Day">China Day</option>
+                                        <option value="Worm day">Worm day</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        <div class="two fields">
+                            <div class="field">
+                            <label>From:</label>
+                            <select class="ui fluid dropdown" id="origen">
+                                <option value="">Available locations</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="ui segment">
+                            <div class="field">
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" onchange="showCarModal()" name="gift" tabindex="0" id="hasCar">
+                                <label>I have an available car</label>
+                            </div>
+                            </div>
+                        </div>
                 </div>
 
                 <!-- This is only shown if car is available -->
@@ -127,11 +126,21 @@
                             </select>
                         </div>
                     </div>
+
                     <div class="ui form">
                         <div class="inline fields">
                             <div class="two wide field">
                                 <label>Free seats</label>
                                 <input type="number" id="seat" placeholder="2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui form">
+                        <div class="inline fields">
+                            <div class="two wide field">
+                                <label>From</label>
+                                <input type="text" id = "carFrom" placeholder="Barcelona">
                             </div>
                         </div>
                     </div>
