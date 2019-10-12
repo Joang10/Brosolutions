@@ -1,5 +1,5 @@
 $.getJSON("data.json", function(json){
-    console.log(json);
-
+    document.getElementById("cac").innerHTML(json.cotxe[0].id_persona);
 
 })
+
