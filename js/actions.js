@@ -1,4 +1,5 @@
-<script type="text/javascript" src="data.json"></script>
+$.getJSON("data.json", function(json){
+    console.log(json);
 
-var data = JSON.parse(data.js);
-console.log(data.cotxe[0]);
+
+})
