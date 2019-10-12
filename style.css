@@ -1,0 +1,11 @@
+.menu-b{
+    text-align: center;
+    overflow: hidden;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
+
+.hidden{
+    visibility: hidden;
+}
