@@ -8,6 +8,14 @@
     <title>Tarcar</title>
     <link rel="stylesheet" href="style.css">
 
+    <!-- Firebase -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
+
     <!-- Compiled and minified CSS -->
     <script
     src="https://code.jquery.com/jquery-3.4.1.js"
@@ -48,16 +56,7 @@
             <p>You will be assigned to a car 24h before the event.</p>
         </div>
 
-    <div class="card-cont" id="contenidor-targetes">
-        <div class="ui card" onclick="showModal1()">
-            <div class="content">
-                <div class="header">HackUPC</div>
-                <div class="description">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas nisi reprehenderit saepe nulla ullam molestias?</p>
-                    <p><b>Location:</b> BCN</p>
-            </div>
-            </div>
-        </div>    
+    <div class="card-cont" id="contenidor-targetes">  
     </div>
 
 
@@ -95,14 +94,14 @@
                 <div class="ui segment">
                     <div class="field">
                     <div class="ui toggle checkbox">
-                        <input type="checkbox" name="gift" tabindex="0" id="hasCar" class="">
+                        <input type="checkbox" onchange="showCarModal()" name="gift" tabindex="0" id="hasCar">
                         <label>I have an available car</label>
                     </div>
                     </div>
                 </div>
 
                 <!-- This is only shown if car is available -->
-                <div class="hasCar"> 
+                <div id="hasCarModal" class="hasCar invisible"> 
                     <div class="two fields">
                         <div class="field">
                             <label>Car type:</label>
@@ -115,32 +114,25 @@
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <div class="ui form">
-                    <div class="inline fields">
-                        <div class="two wide field">
-                            <label>Free seats</label>
-                            <input type="number" placeholder="2">
+                    <div class="ui form">
+                        <div class="inline fields">
+                            <div class="two wide field">
+                                <label>Free seats</label>
+                                <input type="number" placeholder="2">
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <!-- End of hasCar extra form div -->
+
+            <div class="actions">
+                <div class="ui black deny button">Cancel</div>
+                <button class="ui button left" type="submit">Go! </button>
+            </div>
             </form>
         </div>
     </div>
-        <div class="actions">
-            <p>Just fill the form! We'll take care of the rest, you will travel with the most eco-friendly car possible!</p>
-                
-            <p>Are you sure you want to join?</p>
-            <div class="ui black deny button">
-            Nope
-            </div>
-            <div class="ui positive right labeled icon button" onclick="reservationOk()">
-            Yep
-            <i class="checkmark icon"></i>
-            </div>
-        </div>
     </div>
 </body>
 </html>
