@@ -1,11 +1,6 @@
-.menu-b{
-    text-align: center;
-    overflow: hidden;
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-}
-
-.hidden{
-    visibility: hidden;
+.nb{
+    overflow: hidden !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    width: 100% !important;
 }
