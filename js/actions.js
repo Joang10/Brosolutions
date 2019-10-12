@@ -34,3 +34,10 @@ function prepareSearch(){
 function showModal1(){
     $('.ui.modal').modal('show');
 }
+
+function reservationOk(){
+    document.getElementById("resOkMessage").classList.remove("invisible");
+    setTimeout(function () {
+        document.getElementById("resOkMessage").classList.add("invisible");
+    }, 2000);
+}

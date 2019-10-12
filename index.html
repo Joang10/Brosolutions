@@ -40,6 +40,14 @@
             </div>
         </div>
 
+        <div id="resOkMessage" class="ui success message invisible">
+            <i class="close icon"></i>
+            <div class="header">
+                Your reservation was sent succesfully!.
+            </div>
+            <p>You will be assigned to a car 24h before the event.</p>
+        </div>
+
     <div class="card-cont" id="contenidor-targetes">
         <div class="ui card" onclick="showModal1()">
             <div class="content">
@@ -52,15 +60,17 @@
         </div>    
     </div>
 
+
+
     <!--/////////////Modal////////////////-->
     <div class="ui modal">
         <i class="close icon"></i>
         <div class="header">
-            JOIN
+            Let's go!
         </div>
         <div class="image content">
             <div class="description">
-            <div class="ui header">The best car for you!</div>
+            <div class="ui header"></div>
                 
             
             <form class="ui form">
@@ -106,8 +116,16 @@
                         </div>
                     </div>
                 </div>
-                <!-- End of hasCar extra form div -->
 
+                <div class="ui form">
+                    <div class="inline fields">
+                        <div class="two wide field">
+                            <label>Free seats</label>
+                            <input type="number" placeholder="2">
+                        </div>
+                    </div>
+                </div>
+                <!-- End of hasCar extra form div -->
             </form>
         </div>
     </div>
@@ -118,7 +136,7 @@
             <div class="ui black deny button">
             Nope
             </div>
-            <div class="ui positive right labeled icon button">
+            <div class="ui positive right labeled icon button" onclick="reservationOk()">
             Yep
             <i class="checkmark icon"></i>
             </div>
