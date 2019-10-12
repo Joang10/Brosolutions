@@ -206,7 +206,7 @@ function reservationOk(){
   function generaCotxesPossibles (id){
         firebase.database().ref("/").once('value').then(function(db){
         var db = db.val();
-        for (var i = 0; i < db.){
+        for (var i = 0; i < db.car.length; ++i){
         var ciutatuser = db.persona[id].origen;
         }
     
