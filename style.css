@@ -1,6 +1,6 @@
-.nb{
-    overflow: hidden !important;
-    position: fixed !important;
-    bottom: 0 !important;
-    width: 100% !important;
+.card-cont{
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }

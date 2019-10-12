@@ -27,4 +27,10 @@ var content = [
   ];
 
 document.ready
-$('.ui.search').search({source: content});
+function prepareSearch(){
+    $('.ui.search').search({source: content});
+}
+
+function showModal1(){
+    $('.ui.modal').modal('show');
+}
