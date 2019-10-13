@@ -45,12 +45,33 @@
                 <div class="ui green button">Search</div>
             </div>
 
-            <button onclick="" class="fluid ui button">Fits container</button>
+            <button onclick="formNewEvent()" class="fluid ui button">Add Event</button>
         </div>
         
         
-        <div class="eventsForm invisible">
-            HOLAHOLA
+        <div id="eventsForm" class="invisible padded">
+                <form class="ui form">
+                <div class="field">
+                    <label>Event Name</label>
+                    <input type="text" id="id_event" placeholder="First Name">
+                </div>
+                <div class="field">
+                    <label>Description:</label>
+                    <input type="text" id="description" placeholder="Describe the event in 10 words...">
+                </div>
+
+                <div class="field">
+                        <label>Date:</label>
+                        <input type="text" id="eventDate">
+                    </div>
+
+                    <div class="field">
+                            <label>Location:</label>
+                            <input type="text" id="eventPlace" placeholder="Barcelona...">
+                        </div>
+                </form>
+
+                <button class="fluid ui button" onclick="guardaFormulariEvent()"> Add </button>
         </div>
         
         <div id="resOkMessage" class="ui success message invisible">
@@ -79,7 +100,7 @@
             
             <form class="ui form">
                     <div class="field">
-                            <label>Event Name:</label>
+                            <label>First Name:</label>
                             <div class="field">
                                 <input type="text" name="shipping[last-name]" id="id_persona" placeholder="Event Name">
                             </div>

@@ -107,32 +107,13 @@ function reservationOk(){
 
  }
 
- function guardaformulariEvent(){ 
-   var id_ev = document.getElementById("id_event").value;
-   var descripcio_ev = document.getElementById("descripcio").value;
-   var lloc_ev = document.getElementById("eventPlace").value;
-   var date_ev = document.getElementById("eventDate").value;
- 
-   firebase.database().ref("/event").once('value').then(function(event){
-     var even = event.val();
-     
-      firebase.database().ref('/event/' + even.length).set({
-        id_event: id_ev,
-        descripcio: descripcio_ev,
-        lloc: lloc_ev,
-        date: date_ev
-      });
-    });
- 
-  document.getElementById("newEventForm").classList.add("invisible");
- }
  
  function writeUserData(userId, name, email, imageUrl) {
    firebase.database().ref('cotxe/' + userId).set({
      username: name,
      email: email,
      profile_picture : imageUrl
-   });
+    });
  }
  
  function generateEventCards(){
@@ -142,44 +123,64 @@ function reservationOk(){
      for (var i = 0; i < events.length; ++i){
        var card = $("<div>");
        card.addClass("ui card");
-
+       
             var contdiv = $("<div>");
             contdiv.addClass("content");
-           
-                var content = $("<div>");
-                content.addClass("header");
-                content.text(events[i].eventId);
+            
+            var content = $("<div>");
+            content.addClass("header");
+            content.text(events[i].eventId);
+            contdiv.append(content);
+            
+            content = $("<div>");
+            content.addClass("description");
+            var par = $("<p>");
+            par.text(events[i].descripcio);
+            content.append(par);
                 contdiv.append(content);
-
-                content = $("<div>");
-                content.addClass("description");
-                    var par = $("<p>");
-                    par.text(events[i].descripcio);
-                    content.append(par);
-                contdiv.append(content);
- 
+                
                 var ubi = $("<p>");
                 ubi.text(events[i].lloc);
                 contdiv.append(ubi);
-
+                
                 content = $("<div>");
                 content.addClass("date");
                 content.text(events[i].date);
                 contdiv.append(content);
- 
-            card.append(contdiv);
+                
+                card.append(contdiv);
             card.attr("onclick", "showModal1()");
-       $("#contenidor-targetes").append(card);
-     }
-   });
+            $("#contenidor-targetes").append(card);
+          }
+        });
+ }
+ 
+ function guardaFormulariEvent(){ 
+   var id_ev = document.getElementById("id_event").value;
+   var descripcio_ev = document.getElementById("description").value;
+   var lloc_ev = document.getElementById("eventPlace").value;
+   var date_ev = document.getElementById("eventDate").value;
+ 
+   firebase.database().ref("/event").once('value').then(function(event){
+     var even = event.val();
+     console.log(id_ev + " " + descripcio_ev);
+     
+     firebase.database().ref('/event/' + even.length).set({
+       eventId: id_ev,
+       descripcio: descripcio_ev,
+       lloc: lloc_ev,
+       date: date_ev
+      });
+    });    
+    document.getElementById("eventsForm").classList.add("invisible");
  }
  
  function generateCarCards(){
-    firebase.database().ref("/car").once('value').then(function(car) {
-      var cars = car.val();
+   firebase.database().ref("/car").once('value').then(function(car) {
+     var cars = car.val();
   
-      for (var i = 0; i < cars.length; ++i){
-        var card = $("<div>");
+     for (var i = 0; i < cars.length; ++i){
+       var card = $("<div>");
         card.addClass("ui card");
             
         var content = $("<div>");
