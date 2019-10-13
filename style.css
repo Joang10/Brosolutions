@@ -29,3 +29,11 @@
 .invisible{
     display: none;
 }
+
+.hidden{
+    visibility: hidden;
+}
+
+.padded{
+    padding: 1em;
+}

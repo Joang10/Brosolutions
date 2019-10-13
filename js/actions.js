@@ -31,36 +31,6 @@ function showCarModal(){
     }
 };
 
-
-
-var content = [
-    { title: 'Sonar' },
-    { title: 'Oktoberfest' },
-    { title: 'HackUPC' },
-    { title: 'Dia de la Hispanidad' },
-    { title: 'Anguilla' },
-    { title: 'Albania' },
-    { title: 'Armenia' },
-    { title: 'Netherlands Antilles' },
-    { title: 'Angola' },
-    { title: 'Argentina' },
-    { title: 'American Samoa' },
-    { title: 'Austria' },
-    { title: 'Australia' },
-    { title: 'Aruba' },
-    { title: 'Aland Islands' },
-    { title: 'Azerbaijan' },
-    { title: 'Bosnia' },
-    { title: 'Barbados' },
-    { title: 'Bangladesh' },
-    { title: 'Belgium' },
-    { title: 'Burkina Faso' },
-    { title: 'Bulgaria' },
-    { title: 'Bahrain' },
-    { title: 'Burundi' }
-    // etc
-  ];
-
 document.ready
 function prepareSearch(){
     $('.ui.search').search({source: content});
@@ -137,25 +107,25 @@ function reservationOk(){
     });
 
  }
- 
- function guardaformulariEvent(){
- 
+
+ function guardaformulariEvent(){ 
    var id_ev = document.getElementById("id_event").value;
    var descripcio_ev = document.getElementById("descripcio").value;
-   var lloc_ev = document.getElementById("lloc").value;
-   var date_ev = document.getElementById("date").value;
+   var lloc_ev = document.getElementById("eventPlace").value;
+   var date_ev = document.getElementById("eventDate").value;
  
-   firebase.database().ref("/event").once('value').then(function(event) {
+   firebase.database().ref("/event").once('value').then(function(event){
      var even = event.val();
      
-     firebase.database().ref('/event/' + even.length).set({
-       id_event: id_ev,
-       descripcio: descripcio_ev,
-       lloc: lloc_ev,
-       date: date_ev
-     });
-   })
+      firebase.database().ref('/event/' + even.length).set({
+        id_event: id_ev,
+        descripcio: descripcio_ev,
+        lloc: lloc_ev,
+        date: date_ev
+      });
+    });
  
+  document.getElementById("newEventForm").classList.add("invisible");
  }
  
  function writeUserData(userId, name, email, imageUrl) {
@@ -443,6 +413,14 @@ function successAddingGroup(){
   } 
 
 
+  function deleteTar (elem){
+    var x = elem.pare
+    for(a in elem){
+      elem.remove(a);
+    }
+  }
+
+
   function generateMyTars(){
     var nom = null;
     firebase.database().ref("/master").once('value').then(function(master) {
@@ -503,11 +481,16 @@ function successAddingGroup(){
                 var basicred = $("<div>");
                 basicred.addClass("ui basic red button");
                 basicred.text("Cancel");
-              extra.append(two);
-              extra.append(basicred);
-            card.append(extra);
-          ui.append(card);
+                extra.append(two);
+                extra.append(basicred);
+                card.append(extra);
+              ui.append(card);
+              ui.attr("onclick", "deleteTar(this)");
           $("#myTars").append(ui);        
       }
     });
   }
+
+  // function formNewEvent(){
+  //   $("#id_event")
+  // }
