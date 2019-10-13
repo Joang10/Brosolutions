@@ -5,6 +5,13 @@
     flex-wrap: wrap;
 }
 
+.carCards{
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 .card-cont-mytars{
     padding: 1em;
     display: flex;

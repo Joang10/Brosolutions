@@ -90,6 +90,7 @@ function reservationOk(){
      cartype = document.getElementById("carType").value;
      seat = document.getElementById("seat").value
      from = document.getElementById("carFrom").value;
+     ubi = -1;
 
      firebase.database().ref("/car").once('value').then(function(car) {
       var cars = car.val();
@@ -115,7 +116,8 @@ function reservationOk(){
       
       firebase.database().ref('/persona/' + pers.length).set({
         id_persona: nompers,
-        origen: ubi
+        origen: ubi,
+        hasCar: hasCar
       });
       
     });
@@ -224,85 +226,6 @@ function reservationOk(){
     });
   }
 
-  /*   
-function generaCotxesPossibles (id){
-    firebase.database().ref("/").once('value').then(function(db){
-        var db = db.val();
-        for (var i = 0; i < db.car.length; ++i){
-        var ciutatuser = db.persona[id].origen;
-        }
-    
-        var l = [];
-    
-        for (var i = 0; i < db.car.length; ++i){
-            if (db.car[i].Origen === ciutatuser && db.car[i].seat > 0){
-                l.push(db.car[i]);
-            }
-        }
-    });
-
-    for (var i = 0; i < l.length; ++i){
-        var card = $("<div>");
-        card.addClass("ui card");
-            
-            var imatge = $("<div>");
-            imatge.addClass("image");
-                var img = $("img");
-                img.src("https://i.pravatar.cc/300");
-                imatge.append(img);
-
-            var content = $("<div>");
-            content.addClass("content");
-                var head = $("<a>");
-                head.addClass("header");
-                head.text("Sónar");
-                var meta = $("<div>");
-                meta.addClass("meta")
-                    var span = $("<span>")
-                    span.class("date")
-                    span.text(l[i].id_persona)
-                    meta.append(span);
-                var descr = $("<div>");
-                descr.addClass("description");
-                descr.text("Car type: " + l[i].tipus + " Free seats:" + l[i].seat);
-            content.append(head);
-            content.append(meta);
-            content.append(descr);
-            var bottom = $("<div>");
-            bottom.addClass("ui bottom attached button");
-                var icon = $("<i>")
-                icon.addClass("add icon");
-                bottom.append(icon)
-                bottom.text("Select this car.");
-        card.append(imatge);
-        card.append(content);
-        card.append(bottom);            
-            
-    }
-
-   
-    <div class="ui card">
-        <div class="image">
-            <img src="https://i.pravatar.cc/300">
-        </div>
-        <div class="content">
-            <a class="header">Sónar</a>
-            <div class="meta">
-                <span class="date">Driver Name</span>
-            </div>
-            <div class="description">
-            Tinc sida i l'encomano a tothom jeje.
-            </div>
-        </div>
-        <div class="ui bottom attached button">
-            <i class="add icon"></i>
-            Select this car
-        </div>
-    </div>
-    
-}
-    */
-
     function redirect() {
         window.location.href='validatecar.html';
         return false;
@@ -316,7 +239,6 @@ function generaCotxesPossibles (id){
     firebase.database().ref("/").once('value').then(function(db){
       var db = db.val();
       var orig;
-      console.log(db.car.length)
   
       for (var i = 0; i < db.persona.length; ++i){
         var pers = db.persona[i].id_persona;
@@ -329,11 +251,12 @@ function generaCotxesPossibles (id){
           l.push(db.car[i]);
         }
       }
-
+      console.log(l.length);
 
     for (var i = 0; i < l.length; ++i){
         var card = $("<div>");
         card.addClass("ui card");
+        card.attr("id", l[i].id_persona);
             
             var imatge = $("<div>");
             imatge.addClass("image");
@@ -345,12 +268,12 @@ function generaCotxesPossibles (id){
             content.addClass("content");
                 var head = $("<a>");
                 head.addClass("header");
-                head.text("Sónar");
+                head.text(l[i].id_persona);
                 var meta = $("<div>");
                 meta.addClass("meta")
                     var span = $("<span>")
                     span.addClass("date")
-                    span.text(l[i].id_persona)
+                    span.text("Sónar")
                     meta.append(span);
                 var descr = $("<div>");
                 descr.addClass("description");
@@ -364,21 +287,29 @@ function generaCotxesPossibles (id){
                 icon.addClass("add icon");
                 bottom.append(icon)
                 bottom.text("Select this car.");
+                bottom.attr("id", l[i].id_persona);
+                bottom.attr("onclick", "reservaseient(this);");
         card.append(imatge);
         card.append(content);
         card.append(bottom);
         console.log(card);
-        $("#card-cont-availablecars").append(card);    
+        $("#card-cont-availablecars").append(card);   
             
     }
     });
 }
   
-  function reservaseient (id_cotxe){
+  function reservaseient (elem){
+      var id_cotxe = elem.id;
     firebase.database().ref("/").once('value').then(function(db){
       var db = db.val();
       for (var i = 0; i < db.car.length; ++i){
-        if (db.car[i].id_persona == id_cotxe) seat = seat - 1;
+        if (db.car[i].id_persona == id_cotxe){
+
+            firebase.database().ref('cotxe/' + i).set({
+                seat: db.car[i].seat - 1
+            });
+        }
       }
     });
   }
