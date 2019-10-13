@@ -484,12 +484,12 @@ function successAddingGroup(){
   
               var meta = $("<div>");
               meta.addClass("meta");
-              meta.text(cars[i].id_persona);
+              meta.text(l[i].id_persona);
               content.append(meta);
   
               var descript = $("<div>");
               descript.addClass("description");
-              descript.text("I accept pets. Smoking not allowed.");
+              descript.text("I accep t pets. Smoking not allowed. " + l[i].tipus + " car.");
               content.append(descript);
   
             card.append(content);
