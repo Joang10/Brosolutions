@@ -21,9 +21,14 @@ init();
 function showCarModal(){
     var checkbox = document.getElementById("hasCar");
     var modal = document.getElementById("hasCarModal");
-
-    if(checkbox.checked) modal.classList.remove("invisible");
-    else modal.classList.add("invisible");
+    if(checkbox.checked){
+        modal.classList.remove("invisible");
+        document.getElementById("fromnocar").classList.add("invisible");
+    }
+    else{
+        modal.classList.add("invisible");
+        document.getElementById("fromnocar").classList.remove("invisible");
+    }
 };
 
 
