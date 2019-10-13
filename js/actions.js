@@ -71,11 +71,16 @@ function showModal1(){
 }
 
 function reservationOk(){
-    document.getElementById("resOkMessage").classList.remove("invisible");
-    setTimeout(function () {
-        document.getElementById("resOkMessage").classList.add("invisible");
-        redirect();
-    }, 3000);
+    var hasCar = document.getElementById("hasCar").checked;
+    if(!hasCar){
+        document.getElementById("resOkMessage").classList.remove("invisible");
+        setTimeout(function () {
+            document.getElementById("resOkMessage").classList.add("invisible");
+            redirect();
+        }, 3000);
+    }
+
+    
 }
 
 
@@ -88,8 +93,12 @@ function reservationOk(){
    var hasCar = document.getElementById("hasCar").checked;
    var event = document.getElementById("event").value;
    var seat, cartype, from;
-   console.log("HASCAR? " + hasCar);
  
+    firebase.database().ref("/master").set({
+        name: nompers,
+        event: event
+    });
+
    if(hasCar){
        console.log("Has car");
      cartype = document.getElementById("carType").value;
@@ -232,14 +241,30 @@ function reservationOk(){
   }
 
     function redirect() {
-        window.location.href='validatecar.html';
+        window.location.href="validatecar.html";
         return false;
       }
 
 
-
+function actualitzaEventMaster(){
+    var nouEvent = document.getElementById("event").value;
+    firebase.database().ref("/master").set({
+        event: nouEvent
+    });
+    carregaOrigensFormulari();
+}
           
-function generaCotxesPossibles (id){
+function generaCotxesPossibles (){
+    var id = null;
+    var eventid = null;
+    firebase.database().ref("/master").once('value').then(function(master){
+        var mast = master.val();
+        id = mast.name;
+        eventid = mast.event;
+    });
+
+    console.log(id);
+
     var l = [];
     firebase.database().ref("/").once('value').then(function(db){
       var db = db.val();
@@ -252,11 +277,37 @@ function generaCotxesPossibles (id){
         
         
       for (var i = 0; i < db.car.length; ++i){
-        if (orig == db.car[i].Origen && db.car[i].seat > 0){
-          l.push(db.car[i]);
+        if(db.car[i].eventId == eventid){
+          if (orig == db.car[i].Origen && db.car[i].seat > 0){
+            l.push(db.car[i]);
+          }
         }
       }
-      console.log(l.length);
+
+      var auxE = [];
+      var auxH = [];
+      var auxB = [];
+      var auxC = [];
+      for(var i = 0; i < l.length; ++i){
+        if(l[i].tipus == "Electric"){
+          auxE.push(l[i]);
+        }
+        else if(l[i].tipus == "Hybrid"){
+          auxH.push(l[i]);
+        }
+        else if(l[i].tipus == "B"){
+          auxB.push(l[i]);
+        }
+        else{
+          auxC.push(l[i]);
+        }
+      }
+
+      //auxE.concat(auxH.concat(auxB.concat(auxC)));
+      auxB = auxB.concat(auxC);
+      auxH = auxH.concat(auxB);
+      auxE = auxE.concat(auxH);
+      l = auxE;
 
     for (var i = 0; i < l.length; ++i){
         var card = $("<div>");
@@ -278,7 +329,7 @@ function generaCotxesPossibles (id){
                 meta.addClass("meta")
                     var span = $("<span>")
                     span.addClass("date")
-                    span.text("Sónar")
+                    span.text(l[i].eventId)
                     meta.append(span);
                 var descr = $("<div>");
                 descr.addClass("description");
@@ -301,24 +352,55 @@ function generaCotxesPossibles (id){
         $("#card-cont-availablecars").append(card);   
             
     }
-    });
+});
 }
   
-  function reservaseient (elem){
-      var id_cotxe = elem.id;
+function reservaseient (elem){ //funcio reserva seient amb el nom del conductor com a paràmetre
     firebase.database().ref("/").once('value').then(function(db){
+      var nomPas = null;
       var db = db.val();
+      nomPas = db.master.name;
       for (var i = 0; i < db.car.length; ++i){
-        if (db.car[i].id_persona == id_cotxe){
-
-            firebase.database().ref('cotxe/' + i).set({
-                seat: db.car[i].seat - 1
-            });
+        if (db.car[i].id_persona == elem.id){
+            var updates = {};
+            updates['/car/' + i + '/seat'] = db.car[i].seat - 1;
+            return firebase.database().ref().update(updates);
         }
-      }
+        afegeixpassetger(elem.id, nomPas);
+    }
     });
   }
   
+  function afegeixpassetger (conductor,passetger){ //funcio que afegeix un passetger al cotxe amb conductor 
+
+    firebase.database().ref("/").once('value').then(function(db){
+      var db = db.val();
+      for (var i = 0; i < db.car.length; ++i){
+        if (db.car[i].id_persona == conductor && db.car[i].seat > 0){
+         /* firebase.database().ref('/car/group/' + car[i].group.length).set({
+            nom = passetger;
+          });*/
+          var updates = {};
+          if (db.car[i].group == null) updates['/car/'+i+'/group/'+0] = passetger;
+          else updates['/car/'+i+'/group/'+db.car[i].group.length] = passetger;
+          return firebase.database().ref().update(updates);
+        }
+      }
+    });
+
+    successAddingGroup();
+  }
+
+function successAddingGroup(){
+    document.getElementById("card-cont-availablecars").classList.add("invisible");
+    document.getElementById("success-assign").classList.remove("hidden");
+    
+    setTimeout(function () {
+      window.location.href="MyTars.html";
+  }, 3000);
+
+
+}
   function seleccionacotxe(id){
     l = generaCotxesPossibles(id);
   
@@ -326,6 +408,11 @@ function generaCotxesPossibles (id){
 
 
   function carregaOrigensFormulari(){
+    var eventid = null;
+    firebase.database().ref("/master").once('value').then(function(master) {
+      var mast = master.val();
+      eventid = mast.event;
+    });
     firebase.database().ref("/car").once('value').then(function(car) {
       var cars = car.val();
       var res = [];
@@ -336,7 +423,7 @@ function generaCotxesPossibles (id){
             found = true;
           }
         }
-        if(!found){
+        if(!found && cars[i].eventId == eventid){
           res.push(cars[i].Origen);
         }
       }

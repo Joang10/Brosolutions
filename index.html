@@ -84,7 +84,7 @@
                         <div class="two fields">
                                 <div class="field">
                                     <label>Event:</label>
-                                    <select id="event" class="ui fluid dropdown">
+                                    <select id="event" onchange="actualitzaEventMaster()" class="ui fluid dropdown">
                                         <option value="">Type</option>
                                         <option value="Hackupc">Hackupc</option>
                                         <option value="Oktoberfest">Oktoberfest</option>
@@ -139,7 +139,6 @@
                     <div class="ui form">
                         <div class="inline fields">
                             <div class="two wide field">
-                                <script>carregaOrigensFormulari()</script>
                                 <label>From</label>
                                 <input type="text" id = "carFrom" placeholder="Barcelona">
                             </div>
