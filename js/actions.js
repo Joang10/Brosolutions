@@ -317,7 +317,7 @@ function generaCotxesPossibles (){
             var imatge = $("<div>");
             imatge.addClass("image");
                 var img = $("<img>");
-                img.attr("src","https://i.pravatar.cc/300");
+                img.attr("src","https://api.adorable.io/avatars/285/"+i+".png");
                 imatge.append(img);
 
             var content = $("<div>");
@@ -423,15 +423,91 @@ function successAddingGroup(){
             found = true;
           }
         }
-        if(!found && cars[i].eventId == eventid){
+        if(!found && cars[i].eventId == eventid && cars[i].seat > 0){
           res.push(cars[i].Origen);
         }
       }
+
+      var selectobject = document.getElementById("origen");
+      for(var s in selectobject){
+        selectobject.remove(s);
+      }
+
       for(var r = 0; r < res.length; ++r){
         var lloc = $("<option>");
         lloc.text(res[r]);
         lloc.val(res[r]);
         $("#origen").append(lloc);
+      }
+    });
+  } 
+
+
+  function generateMyTars(){
+    var nom = null;
+    firebase.database().ref("/master").once('value').then(function(master) {
+      var mast = master.val();
+      nom = mast.name;
+    });
+    firebase.database().ref("/car").once('value').then(function(car) {
+      var cars = car.val();
+  
+      l = [];
+  
+      for (var i = 0; i < cars.length; ++i){
+        if (cars[i].group != null){
+          for (var j = 0; j < cars[i].group.length; ++j){
+            if (cars[i].group[j] == nom) l.push(cars[i]);
+          }
+        }
+      }
+      console.log(l);
+  
+      for (var i = 0; i < l.length; ++i){
+          var ui = $("<div>");
+          ui.addClass("ui cards");
+            var card = $("<div>");
+            card.addClass("card");
+  
+            var content  = $("<div>");
+            content.addClass("content");
+  
+              var img = $("<img>");
+              img.attr("src", "https://api.adorable.io/avatars/52/3.png");
+              img.addClass("right floated mini ui image");
+              content.append(img);
+  
+              var header = $("<div>");
+              header.addClass("header");
+              header.text(l[i].eventId);
+              content.append(header);
+  
+              var meta = $("<div>");
+              meta.addClass("meta");
+              meta.text(cars[i].id_persona);
+              content.append(meta);
+  
+              var descript = $("<div>");
+              descript.addClass("description");
+              descript.text("I accept pets. Smoking not allowed.");
+              content.append(descript);
+  
+            card.append(content);
+  
+              var extra = $("<div>");
+              extra.addClass("extra content");
+  
+                var two = $("<div>");
+                two.addClass("ui two buttons");
+  
+                var basicred = $("<div>");
+                basicred.addClass("ui basic red button");
+                basicred.text("Cancel");
+              extra.append(two);
+              extra.append(basicred);
+            card.append(extra);
+          ui.append(card);
+          $("#myTars").append(ui);        
       }
     });
   }
