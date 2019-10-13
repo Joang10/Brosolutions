@@ -31,7 +31,6 @@ function showCarModal(){
     }
 };
 
-document.ready
 function prepareSearch(){
     $('.ui.search').search({source: content});
 }
@@ -491,6 +490,7 @@ function successAddingGroup(){
     });
   }
 
-  // function formNewEvent(){
-  //   $("#id_event")
-  // }
+function formNewEvent(){
+   console.log("hola");
+   document.getElementById("eventsForm").classList.remove("invisible");
+ }
